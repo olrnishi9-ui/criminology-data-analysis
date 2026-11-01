@@ -3,7 +3,7 @@
 Analysis of the FBI's LEOKA data (Law Enforcement Officers Killed and Assaulted):
 officers feloniously killed in the US, by state and region, 2003–2023.
 
-Questions covered (HW 1):
+Questions covered (Project 1):
 
 - Officers killed in a given state/year (e.g., Ohio, 2007) and region/year (East North Central, 2012)
 - Total officers killed per state, added as a new column; state and region with the largest totals
@@ -18,7 +18,7 @@ Questions covered (HW 1):
 ## Contents
 
 - `code/` — R Markdown source (to be added)
-- `output/LEOKA_HW1_report.html` — the knitted HTML report (titled "HW 1", published September 5, 2026)
+- `output/LEOKA_project_report.html` — the knitted HTML report (published September 5, 2026)
 
 ## Status
 
