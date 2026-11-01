@@ -18,8 +18,12 @@ One rule for everything, so any project is easy to find later:
 
 | # | Project | What it is | Status |
 |---|---|---|---|
-| 01 | [LEOKA — Officers Killed](projects/01-leoka-officers-killed/) | FBI LEOKA data: officers killed by state and region, 2003–2023 (HW 1) | Report complete |
-| 02 | [Seattle Crime 2026](projects/02-seattle-crime-2026/) | Seattle Police Department crime data for 2026, starting with a full data-quality audit | In progress |
+| 01 | [LEOKA — Officers Killed](projects/01-leoka-officers-killed/) | FBI LEOKA data: officers killed by state and region, 2003–2023 | Report complete |
+| 02 | [Regular Expressions I — Scrabble Words](projects/02-regular-expressions-scrabble-words/) | Learning `grep()` pattern matching on a list of four-letter Scrabble words | Complete |
+| 03 | [Regular Expressions II — Word Patterns](projects/03-regular-expressions-word-patterns/) | Backreferences and `gsub()` transformations: palindromes, doubled letters, consonant/vowel patterns | Complete |
+| 04 | [NCVS — Assault Victimization](projects/04-ncvs-assault-victimization/) | National Crime Victimization Survey: setting up the NCVS tables in class, then a weighted analysis of assault in the US | Complete |
+
+More projects are in preparation and will be added with the next numbers.
 
 ## Tools
 
