@@ -17,6 +17,10 @@ The "plumbing" file, worked through in class. It explains what the NCVS is
 - Loads the four related tables — household, person, incident, and the
   incident-level extract that joins them together — and inspects their
   variable labels from the codebook
+- This is the project's SQL-style work: selecting columns, filtering rows,
+  joining related tables, and stacking tables on top of each other are the
+  core operations of SQL, carried out here in R with dplyr verbs
+  (`select`, `filter`, joins, `bind_rows`) instead of SQL queries
 - Combines the 2022 and 2023 collection years so the result covers *calendar*
   year 2022, fixing the variable-type mismatches between years (e.g. V2061,
   V4126) that otherwise stop the tables from stacking
