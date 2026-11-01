@@ -1,0 +1,23 @@
+# R / RStudio
+.Rhistory
+.RData
+.RDataTmp
+.Rproj.user/
+*.Rproj
+.Ruserdata
+.Renviron
+
+# Knitted / rendered output caches
+*_cache/
+*_files/
+
+# Raw datasets are not tracked by default (they can be large and are
+# usually re-downloadable from the source). Small derived files are fine —
+# force-add them with `git add -f` when you really want one in.
+projects/*/data/*
+!projects/*/data/README.md
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.Rapp.history
