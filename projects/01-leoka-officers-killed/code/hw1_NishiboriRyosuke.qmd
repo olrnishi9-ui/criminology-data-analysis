@@ -1,0 +1,198 @@
+---  
+title: "HW 1"
+output-file: "hw1_james.html"
+author:
+  name: Cesare Beccaria
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+  html:
+    theme: 
+      dark: darkly
+      light: default
+    fig-format: svg
+    embed-resources: false
+number-sections: true
+editor_options: 
+  chunk_output_type: console
+  code-summary: "show R code"
+---
+
+
+## Download the LEOKA data Download LEOKA data and load it into R. Use `read.csv()`
+getwd()
+
+capabilities("X11")
+capabilities("cairo")
+
+```{r}
+#| message: false
+library(dplyr)
+leoka <- read.csv("/Users/nishiboriryousuke/Desktop/UPenn Courses/crimonology/First hwk/leoka.csv")
+```
+
+# Print the first 3 rows of the dataset
+```{r}
+leoka |> head(3)
+```
+
+# How many officers were killed in Ohio in 2007?
+```{r}
+leoka |>
+  filter(State == "Ohio") |>
+  select(X2007)
+  #2
+```
+# How many officers were killed in the East North Central region in 2012?
+```{r}
+find2012 <- leoka |>
+  filter(Region2 == "East North Central") |>
+  select(X2012)
+  
+  sum(find2012)
+  #2
+```
+
+# Add a column showing the total number of officers killed in each state (that is, add up all the years for each state)
+```{r}
+leoka.sum <- leoka |>
+  group_by(State) |>
+  mutate(total_killed = rowSums(pick(X2003:X2023), na.rm = TRUE))
+  
+  leoka.sum |>
+  select(State, total_killed)
+```
+  
+# Print the state having the largest number of officers killed (based on total calculated in \#5)
+```{r}
+leoka.sum |>
+  ungroup() |>
+  arrange(total_killed) |>
+  tail(1) |>
+  select(State, total_killed)
+#Texas
+```
+# Print the region (`Region 1`) having the largest total number of officers killed
+```{r}
+leoka.sum |>
+  group_by(Region1) |>
+  summarise(region_total = sum(total_killed)) |>
+  slice_max(region_total)
+```
+
+# Find all the states that have had no officers killed between 2003 and 2023
+```{r}
+leoka.sum |>
+  ungroup() |>
+  filter(total_killed == 0) |>
+  select(State, total_killed)
+```
+# In which year and in which state were nine officers killed? (Ideas: \#1 explore `which()` and its `arr.ind` parameter, \#2 explore `pivot_longer()`)
+```{r}
+library(tidyr)
+
+leoka.long <- pivot_longer(
+  leoka,
+  X2003:X2023,
+  names_to = "year",
+  values_to = "killed"
+)
+
+leoka.long |>
+  filter(killed == 9) |>
+  select(State, year, killed)
+```
+
+
+# Sort the regions (`Region 1`) from smallest to largest in terms of the number of officers killed in 2022
+```{r}
+leoka |>
+  group_by(Region1) |>
+  summarise(total = sum(X2022, na.rm = TRUE)) |>
+  arrange(total)
+```
+# Create a bar chart (using `barplot()`) showing the number of officers killed by region (`Region 1`). In addition to your script, upload a Word doc/Google doc that shows you inserting your bar chart into a document using a vector graphics format (SVG or EMF)... not a bitmap image (no JPG, PNG)
+
+Here I put @fig-mybarplot, but I only computed counts for 2023. I need to go back and fix this so it covers all the years 2003-2023. They didn't have R or Quarto documents back in 1764 when I published [_Dei Delitti e Delle Pene_](https://en.wikipedia.org/wiki/On_Crimes_and_Punishments).
+
+```{r}
+#| label: fig-mybarplot
+#| fig-cap: Number of Officers Killed by Region... incorrectly computed using only 2023 data... to do this correctly I need to figure out the total number of officers across all years
+
+leoka |>
+  summarize(tot2023 = sum(X2023), .by=Region1) |>
+  barplot(tot2023 ~ Region1, data=_,
+          xlab="Region", ylab="Total officers killed")
+
+#| label: fig-mybarplot
+#| fig-cap: "Total officers killed by region, 2003–2023"
+
+leoka$total_killed <- rowSums(
+  leoka[paste0("X", 2003:2023)],
+  na.rm = TRUE
+)
+
+region_summary <- leoka |>
+  summarise(total = sum(total_killed), .by = Region1)
+
+graphics.off()
+
+svg("officers_by_region.svg", width = 9, height = 6)
+
+barplot(total ~ Region1, data = region_summary,
+        xlab = "Region",
+        ylab = "Total officers killed, 2003–2023")
+
+dev.off()
+```
+
+# Plot the number of total number of officers killed by year
+#| label: fig-mybarplot
+#| fig-cap: "Total officers killed by region, 2003–2023"
+```{r}
+year_total <- colSums(
+  leoka[paste0("X", 2003:2023)],
+  na.rm = TRUE
+)
+
+year_summary <- data.frame(
+  Year = 2003:2023,
+  total = year_total
+)
+
+barplot(total ~ Year, data = year_summary,
+        xlab = "Year",
+        ylab = "Total officers killed",
+        las = 2)
+```
+
+
+# Which region (`Region2`) showed the largest percent decrease in 2023 over the average of 2003-2022? (Lots of directions to go here. Perhaps first consider making a new variable that has the 2003-2022 totals in each row. Then consider `pivot_longer()`/`group_by()`/`summarize()`)
+
+```{r}
+
+leoka$total_killed1 <- rowSums(
+  leoka[paste0("X", 2003:2022)],
+  na.rm = TRUE
+)
+
+region_summary <- leoka |>
+  summarise(
+    total_2003_2022 = sum(total_killed1),
+    killed_2023 = sum(X2023, na.rm = TRUE),
+    .by = Region2
+  )
+
+
+region_summary$average <- region_summary$total_2003_2022 / 20
+
+
+region_summary$percent_decrease <- (
+  (region_summary$average - region_summary$killed_2023) /
+    region_summary$average
+) * 100
+
+region_summary |>
+  arrange(desc(percent_decrease))
+#1     South Atlantic
+```
+
