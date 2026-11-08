@@ -17,9 +17,9 @@ Questions covered (Project 1):
 
 ## Contents
 
-- `code/` — R Markdown source (to be added)
+- `code/hw1_NishiboriRyosuke.qmd` — the original Quarto source (.qmd) that renders the report
 - `output/LEOKA_project_report.html` — the knitted HTML report (published September 5, 2026)
 
 ## Status
 
-Report complete; R Markdown source to be added.
+Complete — report and original Quarto source included.
